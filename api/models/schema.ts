@@ -1,6 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import validator from "validator";
-const newUserSchema = new mongoose.Schema({
+export interface Name extends Document {
+  firstName: string;
+  lastName: string;
+}
+
+export interface Address extends Document {
+  state: string;
+  district: string;
+  address: string;
+}
+
+export interface Idonor extends Document {
+  name?: Name;
+  address?: Address;
+  mobile: string;
+  age: string;
+  gender: string;
+  dateOfCovid: string;
+  dateOfCure: string;
+}
+
+export const newUserSchema = new Schema({
   name: {
     type: {
       firstName: { type: String, lowercase: true, trim: true },
@@ -9,26 +30,15 @@ const newUserSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-
-  Address: {
+  address: {
     type: {
       state: { type: String, lowercase: true, trim: true, required: true },
       district: { type: String, lowercase: true, trim: true, required: true },
       resident: { type: String, lowercase: true, trim: true, required: true },
     },
+    lowercase: true,
     required: true,
   },
-
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    validate: (value: string) => {
-      return validator.isEmail(value);
-    },
-  },
-
   mobile: {
     type: String,
     required: true,
@@ -37,15 +47,21 @@ const newUserSchema = new mongoose.Schema({
     },
   },
 
+  age: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
   dateOfCovid: {
-    type: Date,
+    type: String,
     required: true,
   },
   dateOfCure: {
-    type: Date,
+    type: String,
     required: true,
   },
 });
 
-mongoose.model("donors", newUserSchema);
-module.exports = mongoose.model("donors");
+const schema = mongoose.model<Idonor>("donors", newUserSchema);
+export default schema;

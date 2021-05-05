@@ -1,17 +1,8 @@
-import express, { response } from "express";
+import express from "express";
 import { validate, validatonChecks } from "../validator/registerForm";
-// import schema from "../models/schema";
+import search from "../controllers/search";
+import register from "../controllers/register";
 const router = express.Router();
-// app.use(express.json());
-router.post(
-  "/register",
-  // validatonChecks(),
-  // validate,
-  (req: any, res: any) => {
-    console.log(req.body);
-    res.json(req.body);
-    // let query = schema.create()
-  }
-);
-
+router.get("/search", search);
+router.post("/register", validatonChecks(), validate, register);
 export default router;

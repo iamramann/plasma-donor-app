@@ -1,11 +1,31 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
+exports.newUserSchema = void 0;
+const mongoose_1 = __importStar(require("mongoose"));
 const validator_1 = __importDefault(require("validator"));
-const newUserSchema = new mongoose_1.default.Schema({
+exports.newUserSchema = new mongoose_1.Schema({
     name: {
         type: {
             firstName: { type: String, lowercase: true, trim: true },
@@ -14,22 +34,14 @@ const newUserSchema = new mongoose_1.default.Schema({
         required: true,
         trim: true,
     },
-    Address: {
+    address: {
         type: {
             state: { type: String, lowercase: true, trim: true, required: true },
             district: { type: String, lowercase: true, trim: true, required: true },
             resident: { type: String, lowercase: true, trim: true, required: true },
         },
+        lowercase: true,
         required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        validate: (value) => {
-            return validator_1.default.isEmail(value);
-        },
     },
     mobile: {
         type: String,
@@ -38,14 +50,20 @@ const newUserSchema = new mongoose_1.default.Schema({
             return validator_1.default.isLength(value, { max: 10, min: 10 });
         },
     },
+    age: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
     dateOfCovid: {
-        type: Date,
+        type: String,
         required: true,
     },
     dateOfCure: {
-        type: Date,
+        type: String,
         required: true,
     },
 });
-mongoose_1.default.model("donors", newUserSchema);
-module.exports = mongoose_1.default.model("donors");
+const schema = mongoose_1.default.model("donors", exports.newUserSchema);
+exports.default = schema;
