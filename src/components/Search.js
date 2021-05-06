@@ -17,7 +17,6 @@ export default function Search() {
         mode: "cors",
       }
     ).then(async (res) => {
-      console.log(res);
       if (res.status === 200) {
         let data = await res.json();
         setDetails(data);
@@ -28,12 +27,10 @@ export default function Search() {
   };
 
   const handleDistrictOnChange = (e) => {
-    console.log(e.target.value);
     setChooseDistrict(e.target.value);
   };
 
   const handleOnChange = (e) => {
-    console.log(e.target.value);
     setChooseState(e.target.value);
     let x = districts.states.filter((item) => item.state === e.target.value);
     setDArr(x[0].districts);
@@ -100,6 +97,7 @@ export default function Search() {
             <tr>
               <th>#</th>
               <th>Name</th>
+              <th>Gender</th>
               <th>Mobile</th>
               <th>State</th>
               <th>District</th>
@@ -111,7 +109,14 @@ export default function Search() {
           <tbody>
             {details.length > 0 ? (
               details.map((item, index) => {
-                let { address, dateOfCovid, dateOfCure, name, mobile } = item;
+                let {
+                  address,
+                  dateOfCovid,
+                  dateOfCure,
+                  name,
+                  mobile,
+                  gender,
+                } = item;
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
@@ -120,6 +125,7 @@ export default function Search() {
                         " " +
                         name.lastName.toUpperCase()}
                     </td>
+                    <td>{gender ? gender : null}</td>
                     <td>{mobile}</td>
                     <td>{address.state.toUpperCase()}</td>
                     <td>{address.district.toUpperCase()}</td>
@@ -131,7 +137,7 @@ export default function Search() {
               })
             ) : (
               <tr>
-                <td colSpan="8" className="text-center h4 text-muted">
+                <td colSpan="9" className="text-center h4 text-muted">
                   No records Found
                 </td>
               </tr>

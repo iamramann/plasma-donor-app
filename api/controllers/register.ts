@@ -4,21 +4,18 @@
 
 import schema from "../models/schema";
 export default async function (req: any, res: any) {
-  console.log(req.body);
-  // console.log(req.formError);
-  // if (req.formError.length > 0) {
-  //   return res.status(422).json({ error: req.formError });
-  // }
+  // console.log(req.body);
+
+  if (req.formError.length > 0) {
+    return res.status(422).json(req.formError[0]);
+  }
 
   try {
     let userDetails = getUserDetailsObject(req);
     let user = await schema.create(userDetails);
-    console.log(user);
-
     res.status(201).json({ message: "user registered successfully" });
   } catch (err) {
     console.log(err);
-
     res.status(500).json({ message: err._message });
   }
 }

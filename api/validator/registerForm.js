@@ -32,15 +32,11 @@ let validatonChecks = () => {
             .not()
             .isEmpty()
             .withMessage("Please enter a valid date")
-            .not()
-            .isDate()
             .withMessage("Invalid datey"),
         express_validator_1.check("dateOfCure")
             .not()
             .isEmpty()
             .withMessage("Please enter a valid date")
-            .not()
-            .isDate()
             .withMessage("Invalid datex"),
     ];
 };

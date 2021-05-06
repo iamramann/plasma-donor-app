@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // import { getByDisplayValue } from "@testing-library/dom";
 import React, { useState } from "react";
-import { Row, Col, Image, Form } from "react-bootstrap";
+import { Row, Col, Image, Form, Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "./Register.css";
 import { NavLink, useHistory } from "react-router-dom";
@@ -24,7 +24,10 @@ export default function Register() {
   const [dArr, setDArr] = useState([]);
   const [errors, setErrors] = useState([]);
   const [chooseDistrict, setChooseDistrict] = useState("none");
-
+  const [modalState, setModalState] = useState(false);
+  const toggleModal = (e) => {
+    setModalState(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(chooseState, chooseDistrict);
@@ -41,9 +44,8 @@ export default function Register() {
       .then(async (res) => {
         let data = await res.json();
         if (res.status === 201) {
-        } else if (res.status === 422) {
-          setErrors([data.message]);
-        } else if (res.status === 500) {
+          setModalState(true);
+        } else {
           setErrors([data.message]);
         }
         setUser({
@@ -120,6 +122,7 @@ export default function Register() {
                       onChange={handleInputs}
                       value={user.firstName}
                       placeholder="Enter your First Name"
+                      required={true}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -133,6 +136,7 @@ export default function Register() {
                       onChange={handleInputs}
                       value={user.lastName}
                       placeholder="Enter your Last Name"
+                      required={true}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -147,7 +151,11 @@ export default function Register() {
                   className="margin-b"
                   onChange={handleInputs}
                   value={user.mobile}
-                  placeholder="Enter your Mobile Number"
+                  placeholder="Enter your 10-digit Mobile Number"
+                  required={true}
+                  maxLength="10"
+                  minLength="10"
+                  pattern="^[6-9]\d{9}$"
                 ></Form.Control>
               </Form.Group>
               <Form.Group controlId="formBasicAge">
@@ -163,9 +171,10 @@ export default function Register() {
                       value={user.age}
                       name="age"
                       onChange={handleInputs}
+                      required={true}
                     />
                   </Col>
-                  <Col lg={6}>
+                  <Col lg={6} className="mt-2">
                     <div className="d-flex justify-content-between">
                       <Form.Label className="fs-cs-1">Gender*</Form.Label>
                     </div>
@@ -182,6 +191,7 @@ export default function Register() {
                       type="radio"
                       name="gender"
                       id={`inline-radio-2`}
+                      required={true}
                     />
                   </Col>
                 </Row>
@@ -196,6 +206,7 @@ export default function Register() {
                   className="w-100 p-2"
                   value={chooseState}
                   onChange={handleOnChange}
+                  required={true}
                 >
                   <option value="none" id="none" name="none">
                     Please Select
@@ -220,6 +231,7 @@ export default function Register() {
                   className="w-100 p-2"
                   value={chooseDistrict}
                   onChange={handleDistrictOnChange}
+                  required={true}
                 >
                   <option value="none" id="none" name="none">
                     Please Select
@@ -246,6 +258,7 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.resident}
                   placeholder="Enter your permanent address*"
+                  required={true}
                 ></Form.Control>
               </Form.Group>
 
@@ -257,6 +270,7 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.dateOfCovid}
                   placeholder="Covid Diagnosis Date"
+                  required={true}
                 />
               </Form.Group>
 
@@ -268,6 +282,7 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.dateOfCure}
                   placeholder="Covid Cure Date"
+                  required={true}
                 />
               </Form.Group>
 
@@ -278,6 +293,28 @@ export default function Register() {
           </div>
         </Col>
       </Row>
+      <Modal
+        size="md"
+        show={modalState}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton onClick={toggleModal}>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Thank You
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Small steps can make big changes in the world, By registering with
+            us and help needy people to get plasma. it may save their life. once
+            again Thank you so much.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={toggleModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
