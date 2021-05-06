@@ -13,6 +13,8 @@ export default async function (req: any, res: any) {
   try {
     let userDetails = getUserDetailsObject(req);
     let user = await schema.create(userDetails);
+    console.log(user);
+
     res.status(201).json({ message: "user registered successfully" });
   } catch (err) {
     console.log(err);
@@ -28,6 +30,7 @@ function getUserDetailsObject(req: any) {
     mobile,
     state,
     district,
+    resident,
     dateOfCovid,
     dateOfCure,
     age,
@@ -43,7 +46,7 @@ function getUserDetailsObject(req: any) {
     address: {
       state: state.toLowerCase(),
       district: district.toLowerCase(),
-      // resident: resident.toLowerCase(),
+      resident: resident.toLowerCase(),
     },
     dateOfCovid,
     dateOfCure,

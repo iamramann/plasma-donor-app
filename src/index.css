@@ -34,3 +34,7 @@ th {
 td {
   font-size: 0.8rem;
 }
+
+.cursor-ptr {
+  cursor: pointer;
+}

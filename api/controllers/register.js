@@ -16,6 +16,7 @@ async function default_1(req, res) {
     try {
         let userDetails = getUserDetailsObject(req);
         let user = await schema_1.default.create(userDetails);
+        console.log(user);
         res.status(201).json({ message: "user registered successfully" });
     }
     catch (err) {
@@ -25,7 +26,7 @@ async function default_1(req, res) {
 }
 exports.default = default_1;
 function getUserDetailsObject(req) {
-    let { firstName, lastName, mobile, state, district, dateOfCovid, dateOfCure, age, gender, } = req.body;
+    let { firstName, lastName, mobile, state, district, resident, dateOfCovid, dateOfCure, age, gender, } = req.body;
     let userDetails = {
         name: {
             firstName: firstName.toLowerCase(),
@@ -35,7 +36,7 @@ function getUserDetailsObject(req) {
         address: {
             state: state.toLowerCase(),
             district: district.toLowerCase(),
-            // resident: resident.toLowerCase(),
+            resident: resident.toLowerCase(),
         },
         dateOfCovid,
         dateOfCure,

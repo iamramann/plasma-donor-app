@@ -9,6 +9,7 @@ export interface Address extends Document {
   state: string;
   district: string;
   address: string;
+  resident: string;
 }
 
 export interface Idonor extends Document {
