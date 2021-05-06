@@ -7,8 +7,29 @@ import "./Register.css";
 import { NavLink, useHistory } from "react-router-dom";
 import indianState from "../../constants/indianState";
 import districts from "../../constants/districts";
+
+import validator from "validator";
 export default function Register() {
-  const history = useHistory();
+  const [fNameError, setFNameError] = useState(null);
+  const [lNameError, setLNameError] = useState(null);
+  const [mobileError, setMobileError] = useState(null);
+  const [ageError, setAgeError] = useState(null);
+  const [stateError, setStateError] = useState(null);
+  const [districtError, setDistrictError] = useState(null);
+  const [covidError, setCovidError] = useState(null);
+  const [cureError, setCureError] = useState(null);
+  const [residentError, setResidentError] = useState(null);
+  const [fvError, setFvError] = useState({
+    firstName: "",
+    lastName: "",
+    mobile: "",
+    age: "",
+    gender: "",
+    resident: "",
+    dateOfCovid: "",
+    dateOfCure: "",
+  });
+
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -28,43 +49,117 @@ export default function Register() {
   const toggleModal = (e) => {
     setModalState(false);
   };
+
+  const customValidator = (allDetails) => {
+    console.log(allDetails);
+    let errorArr = [];
+    if (!validator.isAlpha(allDetails.firstName)) {
+      console.log(fvError);
+      setFNameError("First Name must contain alphabates");
+      errorArr.push(1);
+    } else {
+      setFNameError(null);
+    }
+    if (!validator.isAlpha(allDetails.lastName)) {
+      setLNameError("Last Name must contain alphabates");
+      errorArr.push(1);
+    } else {
+      setLNameError(null);
+    }
+
+    if (!validator.matches(allDetails.mobile, /^[6-9]\d{9}$/)) {
+      setMobileError("Please enter correct phone number");
+      errorArr.push(1);
+    } else {
+      setMobileError(null);
+    }
+
+    if (!validator.isNumeric(allDetails.age)) {
+      setAgeError("Please enter a valid age");
+      errorArr.push(1);
+    } else {
+      setAgeError(null);
+    }
+
+    if (indianState.indexOf(allDetails.state) === -1) {
+      setStateError("Please choose from the above options");
+      errorArr.push(1);
+    } else {
+      setStateError(null);
+    }
+
+    if (validator.isEmpty(allDetails.resident)) {
+      setResidentError("Residential address can't be left blank");
+      errorArr.push(1);
+    } else {
+      setResidentError(null);
+    }
+
+    if (dArr.indexOf(allDetails.district) === -1) {
+      setDistrictError("Please choose from the above options");
+      errorArr.push(1);
+    } else {
+      setDistrictError(null);
+    }
+
+    if (!validator.isDate(allDetails.dateOfCovid)) {
+      setCovidError("Please choose a correct date");
+      errorArr.push(1);
+    } else {
+      setCovidError(null);
+    }
+    if (!validator.isDate(allDetails.dateOfCure)) {
+      setCureError("Please choose a correct date");
+      errorArr.push(1);
+    } else {
+      setCureError(null);
+    }
+    if (errorArr.length > 0) {
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(chooseState, chooseDistrict);
-    console.log(user);
     let obj = { ...user, state: chooseState, district: chooseDistrict };
-    const res = await fetch("http://localhost:5000/register", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(obj),
-    })
-      .then(async (res) => {
-        let data = await res.json();
-        if (res.status === 201) {
-          setModalState(true);
-        } else {
-          setErrors([data.message]);
-        }
-        setUser({
-          firstName: "",
-          lastName: "",
-          mobile: "",
-          age: "",
-          gender: "",
-          resident: "",
-          dateOfCovid: "",
-          dateOfCure: "",
-        });
-
-        setChooseDistrict("none");
-        setChooseState("none");
+    let isSubmit = customValidator(obj);
+    console.log(isSubmit);
+    if (isSubmit) {
+      const res = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
       })
-      .catch((error) => {
-        alert("something went wrong");
-      });
+        .then(async (res) => {
+          let data = await res.json();
+          if (res.status === 201) {
+            setModalState(true);
+          } else {
+            setErrors([data.message]);
+          }
+          setUser({
+            firstName: "",
+            lastName: "",
+            mobile: "",
+            age: "",
+            gender: "",
+            resident: "",
+            dateOfCovid: "",
+            dateOfCure: "",
+          });
+
+          setChooseDistrict("none");
+          setChooseState("none");
+        })
+        .catch((error) => {
+          alert("something went wrong");
+        });
+    }
   };
 
   let name, value;
@@ -122,8 +217,13 @@ export default function Register() {
                       onChange={handleInputs}
                       value={user.firstName}
                       placeholder="Enter your First Name"
-                      required={true}
+                      // required={true}
                     ></Form.Control>
+                    {fNameError ? (
+                      <Form.Text className="text-danger">
+                        {fNameError}
+                      </Form.Text>
+                    ) : null}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -136,8 +236,13 @@ export default function Register() {
                       onChange={handleInputs}
                       value={user.lastName}
                       placeholder="Enter your Last Name"
-                      required={true}
+                      // required={true}
                     ></Form.Control>
+                    {lNameError ? (
+                      <Form.Text className="text-danger">
+                        {lNameError}
+                      </Form.Text>
+                    ) : null}
                   </Form.Group>
                 </Col>
               </Row>
@@ -152,11 +257,14 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.mobile}
                   placeholder="Enter your 10-digit Mobile Number"
-                  required={true}
+                  // required={true}
                   maxLength="10"
                   minLength="10"
-                  pattern="^[6-9]\d{9}$"
+                  // pattern="^[6-9]\d{9}$"
                 ></Form.Control>
+                {mobileError ? (
+                  <Form.Text className="text-danger">{mobileError}</Form.Text>
+                ) : null}
               </Form.Group>
               <Form.Group controlId="formBasicAge">
                 <Row>
@@ -171,8 +279,11 @@ export default function Register() {
                       value={user.age}
                       name="age"
                       onChange={handleInputs}
-                      required={true}
+                      // required={true}
                     />
+                    {ageError ? (
+                      <Form.Text className="text-danger">{ageError}</Form.Text>
+                    ) : null}
                   </Col>
                   <Col lg={6} className="mt-2">
                     <div className="d-flex justify-content-between">
@@ -191,8 +302,13 @@ export default function Register() {
                       type="radio"
                       name="gender"
                       id={`inline-radio-2`}
-                      required={true}
+                      // required={true}
                     />
+                    {/* {fNameError ? (
+                      <Form.Text className="text-danger">
+                        {fNameError}
+                      </Form.Text>
+                    ) : null} */}
                   </Col>
                 </Row>
               </Form.Group>
@@ -206,7 +322,7 @@ export default function Register() {
                   className="w-100 p-2"
                   value={chooseState}
                   onChange={handleOnChange}
-                  required={true}
+                  // required={true}
                 >
                   <option value="none" id="none" name="none">
                     Please Select
@@ -220,6 +336,9 @@ export default function Register() {
                     );
                   })}
                 </select>
+                {stateError ? (
+                  <Form.Text className="text-danger">{stateError}</Form.Text>
+                ) : null}
               </Form.Group>
               <Form.Group>
                 <div className="d-flex justify-content-between">
@@ -231,7 +350,7 @@ export default function Register() {
                   className="w-100 p-2"
                   value={chooseDistrict}
                   onChange={handleDistrictOnChange}
-                  required={true}
+                  // required={true}
                 >
                   <option value="none" id="none" name="none">
                     Please Select
@@ -244,6 +363,9 @@ export default function Register() {
                     );
                   })}
                 </select>
+                {districtError ? (
+                  <Form.Text className="text-danger">{districtError}</Form.Text>
+                ) : null}
               </Form.Group>
               <Form.Group controlId="resident">
                 <div className="d-flex">
@@ -258,8 +380,11 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.resident}
                   placeholder="Enter your permanent address*"
-                  required={true}
+                  // required={true}
                 ></Form.Control>
+                {residentError ? (
+                  <Form.Text className="text-danger">{residentError}</Form.Text>
+                ) : null}
               </Form.Group>
 
               <Form.Group controlId="dob">
@@ -270,8 +395,12 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.dateOfCovid}
                   placeholder="Covid Diagnosis Date"
-                  required={true}
+                  // required={true}
                 />
+
+                {covidError ? (
+                  <Form.Text className="text-danger">{covidError}</Form.Text>
+                ) : null}
               </Form.Group>
 
               <Form.Group controlId="dob">
@@ -282,8 +411,11 @@ export default function Register() {
                   onChange={handleInputs}
                   value={user.dateOfCure}
                   placeholder="Covid Cure Date"
-                  required={true}
+                  // required={true}
                 />
+                {cureError ? (
+                  <Form.Text className="text-danger">{cureError}</Form.Text>
+                ) : null}
               </Form.Group>
 
               <Button className="  w-100 mt-1 clr" type="submit">
