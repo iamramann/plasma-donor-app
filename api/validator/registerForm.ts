@@ -21,11 +21,11 @@ let validatonChecks = () => {
       .not()
       .isEmpty()
       .withMessage("District can't be left blank"),
-    check("mobile")
+    check("mobileNumber")
       .not()
       .isEmpty()
       .withMessage("Mobile number cannot be empty")
-      .matches(/^[789]\d{9}$/)
+      .matches(/^[6-9]\d{9}$/)
       .withMessage("Not a valid mobile Number"),
     check("dateOfCovid")
       .not()

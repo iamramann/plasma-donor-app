@@ -170,7 +170,7 @@ const districts = {
       districts: ["Daman", "Diu"],
     },
     {
-      state: "Delhi (NCT)",
+      state: "Delhi",
       districts: [
         "Central Delhi",
         "East Delhi",

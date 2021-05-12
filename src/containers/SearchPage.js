@@ -1,12 +1,12 @@
 import { Container } from "react-bootstrap";
-import MyNavbar from "../components/MyNavbar";
-import Register from "../components/Register/Register";
+import MyNavbar from "../components/MyNavbar/MyNavbar";
+import Search from "../components/Search/Search";
 export default function SearchPage() {
   return (
     <>
-      <Container>
+      <Container fluid>
         <MyNavbar />
-        <Register />
+        <Search />
       </Container>
     </>
   );

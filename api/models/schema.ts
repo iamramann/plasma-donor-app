@@ -8,18 +8,18 @@ export interface Name extends Document {
 export interface Address extends Document {
   state: string;
   district: string;
-  address: string;
-  resident: string;
 }
 
 export interface Idonor extends Document {
   name?: Name;
   address?: Address;
-  mobile: string;
+  mobileNumber: string;
   age: string;
   gender: string;
   dateOfCovid: string;
   dateOfCure: string;
+  bloodGroup: string;
+  isActive: boolean;
 }
 
 export const newUserSchema = new Schema({
@@ -35,14 +35,14 @@ export const newUserSchema = new Schema({
     type: {
       state: { type: String, lowercase: true, trim: true, required: true },
       district: { type: String, lowercase: true, trim: true, required: true },
-      resident: { type: String, lowercase: true, trim: true, required: true },
     },
     lowercase: true,
     required: true,
   },
-  mobile: {
+  mobileNumber: {
     type: String,
     required: true,
+    unique: true,
     validate: (value: string) => {
       return validator.isLength(value, { max: 10, min: 10 });
     },
@@ -50,9 +50,11 @@ export const newUserSchema = new Schema({
 
   age: {
     type: String,
+    required: true,
   },
   gender: {
     type: String,
+    required: true,
   },
   dateOfCovid: {
     type: String,
@@ -62,7 +64,9 @@ export const newUserSchema = new Schema({
     type: String,
     required: true,
   },
+  bloodGroup: { type: String, required: true },
+  isActive: { type: Boolean, default: true },
 });
 
-const schema = mongoose.model<Idonor>("donors", newUserSchema);
+const schema = mongoose.model<Idonor>("mydonorr", newUserSchema);
 export default schema;

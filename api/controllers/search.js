@@ -8,13 +8,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 const schema_1 = __importDefault(require("../models/schema"));
 async function default_1(req, res) {
-    let { state, district } = req.query;
+    // console.log(req.query);
+    let { state, district, bloodGroup } = req.query;
     let x = state.toLowerCase();
     let y = district.toLowerCase();
     try {
         let result = await schema_1.default.find({
             "address.state": x,
             "address.district": y,
+            bloodGroup: bloodGroup,
+            isActive: true,
         });
         if (result.length > 0) {
             res.status(200).json(result);

@@ -1,0 +1,8 @@
+1. errors should be symm. - done
+2. gender is req. - done
+3. residential address !req. - done
+4. blood group is req. - done
+5. unique mobile number. - done
+6. on search bloodg group req. - done
+7. multiple blood group or all blood group.
+8. hide a person. - done

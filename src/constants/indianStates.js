@@ -1,4 +1,4 @@
-const indianState = [
+const indianStates = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -37,4 +37,4 @@ const indianState = [
   "Puducherry",
 ];
 
-export default indianState;
+export default indianStates;

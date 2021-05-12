@@ -1,20 +1,17 @@
 /* eslint-disable no-unused-vars */
-import SearchPage from "./container/SearchPage";
-import RegisterPage from "./container/RegisterPage";
+import SearchPage from "./containers/SearchPage";
+import Register from "./containers/Register";
 import { Switch, Route } from "react-router-dom";
-import HelpPage from "./container/HelpPgae";
+// import HelpPage from "./container/HelpPgae";
 function App() {
   return (
     <>
       <Switch>
         <Route exact path="/">
-          <RegisterPage />
+          <Register />
         </Route>
         <Route exact path="/search">
           <SearchPage />
-        </Route>
-        <Route exact path="/help">
-          <HelpPage />
         </Route>
       </Switch>
     </>

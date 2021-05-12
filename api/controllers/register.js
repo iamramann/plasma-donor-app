@@ -8,8 +8,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const schema_1 = __importDefault(require("../models/schema"));
 async function default_1(req, res) {
-    console.log(req.body);
-    console.log(req.formError[0]);
     if (req.formError.length > 0) {
         return res.status(422).json(req.formError[0]);
     }
@@ -19,28 +17,49 @@ async function default_1(req, res) {
         res.status(201).json({ message: "user registered successfully" });
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({ message: err._message });
+        if (err.code === 11000) {
+            res.status(500).json({ message: "Mobile Number is already in use" });
+            return;
+        }
+        res.status(500).json({ message: "something went wrong" });
     }
 }
 exports.default = default_1;
 function getUserDetailsObject(req) {
-    let { firstName, lastName, mobile, state, district, resident, dateOfCovid, dateOfCure, age, gender, } = req.body;
+    const month = [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JULY",
+        "AUGUST",
+        "SEPT",
+        "OCT",
+        "NOV",
+        "DEC",
+    ];
+    let { firstName, lastName, mobileNumber, state, district, dateOfCovid, dateOfCure, age, gender, bloodGroup, } = req.body;
+    let newDateOfCovid = Date.parse(dateOfCovid);
+    let newDateOfCure = Date.parse(dateOfCure);
+    let x = new Date(newDateOfCovid);
+    let y = new Date(newDateOfCure);
     let userDetails = {
         name: {
             firstName: firstName.toLowerCase(),
             lastName: lastName.toLowerCase(),
         },
-        mobile,
+        mobileNumber,
         address: {
             state: state.toLowerCase(),
             district: district.toLowerCase(),
-            resident: resident.toLowerCase(),
         },
-        dateOfCovid,
-        dateOfCure,
+        dateOfCovid: x.getDate() + "-" + month[x.getMonth()] + "-" + x.getFullYear(),
+        dateOfCure: y.getDate() + "-" + month[y.getMonth()] + "-" + y.getFullYear(),
         age,
         gender,
+        bloodGroup,
     };
     return userDetails;
 }

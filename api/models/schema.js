@@ -38,23 +38,25 @@ exports.newUserSchema = new mongoose_1.Schema({
         type: {
             state: { type: String, lowercase: true, trim: true, required: true },
             district: { type: String, lowercase: true, trim: true, required: true },
-            resident: { type: String, lowercase: true, trim: true, required: true },
         },
         lowercase: true,
         required: true,
     },
-    mobile: {
+    mobileNumber: {
         type: String,
         required: true,
+        unique: true,
         validate: (value) => {
             return validator_1.default.isLength(value, { max: 10, min: 10 });
         },
     },
     age: {
         type: String,
+        required: true,
     },
     gender: {
         type: String,
+        required: true,
     },
     dateOfCovid: {
         type: String,
@@ -64,6 +66,8 @@ exports.newUserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    bloodGroup: { type: String, required: true },
+    isActive: { type: Boolean, default: true },
 });
-const schema = mongoose_1.default.model("donors", exports.newUserSchema);
+const schema = mongoose_1.default.model("mydonorr", exports.newUserSchema);
 exports.default = schema;

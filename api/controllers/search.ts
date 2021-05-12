@@ -3,7 +3,8 @@
  */
 import schema from "../models/schema";
 export default async function (req: any, res: any) {
-  let { state, district } = req.query;
+  // console.log(req.query);
+  let { state, district, bloodGroup } = req.query;
   let x = state.toLowerCase();
   let y = district.toLowerCase();
 
@@ -11,6 +12,8 @@ export default async function (req: any, res: any) {
     let result = await schema.find({
       "address.state": x,
       "address.district": y,
+      bloodGroup: bloodGroup,
+      isActive: true,
     });
     if (result.length > 0) {
       res.status(200).json(result);

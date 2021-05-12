@@ -1,40 +1,21 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-.cs-btn {
-  background-color: transparent;
-  color: #fe5031;
-  border: solid 1px #fe5031;
-  outline: none;
-}
-.cs-btn:hover {
-  background-color: #fe5031;
-  border: solid 1px #fe5031;
-}
-.btn:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-th {
-  font-size: 0.8rem;
-}
-
-td {
-  font-size: 0.8rem;
-}
-
-.cursor-ptr {
-  cursor: pointer;
+.no-border {
+  border: 0;
+  box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
 }
